@@ -14,20 +14,23 @@ var getElementsByClassName = function(className) {
   // assign an empty array
   var resultArr = [];
 
-  var recursiveInnerFunction = function(className) {
-    // iterate through the document.body
-    for (var i = 0; i < sheet.children.length; i++) {
-      // if grandDiv[i].classList === className
-      if (sheet.children[i].classList === className) {
-        // reassign grandDiv to grandDiv[i]
-        sheet.children = sheet.children[i];
-        // push grandDiv[i] into resultArray
-        resultArr.push(sheet.children);
-        // invoke recursive inner Function with grandDiv[i] argument
-        recursiveInnerFunction(sheet.children.classList);
-      }
+  var recursiveInnerFunction = function(child) {
+    var split = child.className.split(' ');
+    // if childs.className === className
+    if (split.indexOf(className) >= 0) {
+      // push child into resultArray
+      resultArr.push(child);
+    }
+
+    // iterate over child's children
+    for (var i = 0; i < child.children.length; i++) {
+      // invoke recursiveInnerFunction by calling child at i
+      recursiveInnerFunction(child.children[i]);
     }
   };
+  // invoke recursiveInnerFunction by calling document.body
+  recursiveInnerFunction(document.body);
+  // return resultArr
   return resultArr;
 };
 
